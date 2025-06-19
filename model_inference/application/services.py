@@ -2,6 +2,7 @@ from typing import List
 import pandas as pd
 import bentoml
 from model_inference.domain.sensor import SensorData
+from model_inference.application.loaders import ModelLoader
 
 @bentoml.service(
     resources={"cpu": "2"},
@@ -16,7 +17,7 @@ class AnomalyDetectorService:
             model_path: Path to the saved model
             serialization_method: 'json' (recommended), 'joblib', or 'pickle'
         """
-        self.model_manager = ProphetModelManager(model_path, serialization_method)
+        self.model_manager = ModelLoader(model_path, serialization_method)
         self._model = None
     
     def _load_model(self) -> Prophet:
