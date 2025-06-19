@@ -1,6 +1,6 @@
-def main():
-    print("Hello from model-serve-template!")
+from fastapi import FastAPI
+from api.routes import users
 
+app = FastAPI()
 
-if __name__ == "__main__":
-    main()
+app.include_router(users.router, prefix="/api")
