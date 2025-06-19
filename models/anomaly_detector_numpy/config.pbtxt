@@ -1,0 +1,67 @@
+name: "anomaly_detector_numpy"
+backend: "python"
+max_batch_size: 0
+input [
+  {
+    name: "timestamp"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  },
+  {
+    name: "machine_id"
+    data_type: TYPE_STRING
+    dims: [ -1 ]
+  },
+  {
+    name: "failure"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val1"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val2"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val3"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val4"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "field7"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val5"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val6"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  },
+  {
+    name: "val7"
+    data_type: TYPE_FP32
+    dims: [ -1 ]
+  }
+]
+output [
+  {
+    name: "anomaly_indices"
+    data_type: TYPE_INT32
+    dims: [ -1 ]
+  }
+] 

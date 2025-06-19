@@ -1,0 +1,16 @@
+name: "anomaly_detector_json"
+backend: "python"
+input [
+  {
+    name: "INPUT"
+    data_type: TYPE_STRING
+    dims: [1]
+  }
+]
+output [
+  {
+    name: "OUTPUT"
+    data_type: TYPE_STRING
+    dims: [1]
+  }
+] 
