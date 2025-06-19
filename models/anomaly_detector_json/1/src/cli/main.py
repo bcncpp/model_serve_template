@@ -8,9 +8,7 @@ from datetime import datetime
 import os
 
 app = typer.Typer()
-#Get cvs 2020-03-19/S1.csv
-
-
+# Get cvs 2020-03-19/S1.csv
 
 
 @app.command("print")
@@ -33,13 +31,13 @@ def print_csv(csv_path: str = "2020-03-19/S1.csv"):
     except Exception as e:
         print(f"Error reading {csv_path}: {e}")
 
-    
 
 @app.command()
 def generate(path: str):
     if not path:
         raise ValueError(f"Path invalid {path}")
     generate_syn_data(path=path)
+
 
 @app.command()
 def parse_sensor_data(
@@ -61,6 +59,7 @@ def parse_sensor_data(
     and prints the number of records. This prepares the data for anomaly detection.
     """
     import csv
+
     sensor_data_list = []
     with open(csv_path, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
@@ -83,6 +82,7 @@ def parse_sensor_data(
     print(f"Parsed {len(sensor_data_list)} SensorData records from {csv_path}")
     return sensor_data_list
 
+
 @app.command("detect-anomaly")
 def detect_anomaly(csv_path: str = "2020-03-19/S1.csv"):
     """
@@ -100,7 +100,8 @@ def detect_anomaly(csv_path: str = "2020-03-19/S1.csv"):
         print("No anomalies detected.")
     else:
         print("Anomalies detected:")
-        print(anomalies[['ds', 'y', 'yhat', 'yhat_lower', 'yhat_upper']])
+        print(anomalies[["ds", "y", "yhat", "yhat_lower", "yhat_upper"]])
+
 
 if __name__ == "__main__":
     app()

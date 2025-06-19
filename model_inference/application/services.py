@@ -3,10 +3,34 @@ import pandas as pd
 import bentoml
 from bentoml.io import JSON
 from model_inference.domain.sensor import SensorData
+from pathlib import Path
+class ModelLoader:
+     def __init__(self, model_path: str = "prophet_model.json", serialization_method: str = "json"):
+        """
+        Initialize model manager
+        
+        Args:
+            model_path: Path to save/load model
+            serialization_method: 'json', 'joblib', or 'pickle'
+                - 'json': Fastest loading, cross-platform, human-readable (recommended)
+                - 'joblib': Faster than pickle, good compression
+                - 'pickle': Python standard, but slower and larger files
+        """
+        self.serialization_method = serialization_method
+        
+        # Set appropriate file extension
+        if serialization_method == "json" and not model_path.endswith('.json'):
+            model_path = model_path.replace('.pkl', '.json').replace('.joblib', '.json')
+        elif serialization_method == "joblib" and not model_path.endswith('.joblib'):
+            model_path = model_path.replace('.pkl', '.joblib').replace('.json', '.joblib')
+        elif serialization_method == "pickle" and not model_path.endswith('.pkl'):
+            model_path = model_path.replace('.json', '.pkl').replace('.joblib', '.pkl')
+            
+        self.model_path = Path(model_path)
+        self._model = None
+    def load_model(selffgit)
 
-class ModelManager:
-    def __init__(self, model):
-        self.model = model
+
 @bentoml.service(
     resources={"cpu": "2"},
     traffic={"timeout": 60}
@@ -20,7 +44,7 @@ class AnomalyDetectorService:
             model_path: Path to the saved model
             serialization_method: 'json' (recommended), 'joblib', or 'pickle'
         """
-        self.model_manager = ModelLoader(model_p
+        self.model_manager = ModelLoader(model_path=model_path, serialization_method=serialization_method)
         self._model = None
     
     def _load_model(self) -> Prophet:
