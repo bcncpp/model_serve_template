@@ -1,6 +1,6 @@
-from model_inference.services.anomaly import AnomalyDetectorService
+from model_inference.domain.services.anomaly import AnomalyDetectionService
 
 
-def get_anomaly_detector_service() -> AnomalyDetectorService:
-    user_repo = AnomalyDetectorService()
-    return user_repo
+def get_anomaly_detection_service() -> AnomalyDetectionService:
+    service = AnomalyDetectionService()
+    return service

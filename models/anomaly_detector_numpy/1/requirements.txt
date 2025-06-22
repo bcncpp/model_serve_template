@@ -1,4 +1,0 @@
-pandas
-prophet
-pydantic
-matplotlib 

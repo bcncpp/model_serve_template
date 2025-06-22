@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from api.routes import sensor_anomalies
+from api.controllers.anomaly_detector import AnomalyDetectorController
 
 app = FastAPI()
-app.include_router(sensor_anomalies.router, prefix="/api")
+anomaly_detector = AnomalyDetectorController()
+app.include_router(anomaly_detector.router, prefix="/api")
