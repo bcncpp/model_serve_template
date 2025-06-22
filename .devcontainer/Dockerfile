@@ -1,35 +1,30 @@
-# ---------- Stage 1: Base with PyTorch & CUDA ----------
+# Stage 1: Base with PyTorch
 FROM pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime AS base
 
-# ---------- Stage 2: Devcontainer features ----------
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 AS dev-base
+# Stage 2: Dev container base (adds tooling)
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 AS dev
 
-# Copy CUDA-enabled base (includes Python and PyTorch) into dev container
+# Copy runtime files from base (with PyTorch + CUDA)
 COPY --from=base / / 
 
-# ---------- Stage 3: Final setup ----------
+# Set arguments and environment
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=1000
 ENV DEBIAN_FRONTEND=noninteractive
-
-# Install additional dev tools and Python packages
+# Install Python and tools
 RUN apt-get update && apt-get install -y \
-    python3-pip \
-    nano curl wget less git sudo \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir \
-        polars numpy pandas \
-        torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    python3.10 python3-pip python3-venv python3-dev \
+    build-essential curl git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Create user
-RUN groupadd --gid ${USER_GID} ${USERNAME} \
-    && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
-    && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/99-${USERNAME} \
-    && chmod 0440 /etc/sudoers.d/99-${USERNAME}
+# Symlink python and pip
+RUN ln -s /usr/bin/python3.10 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip
 
-USER ${USERNAME}
-WORKDIR /home/${USERNAME}
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-CMD ["bash"]
+WORKDIR /workspace
+
+# Install all required Python packages globally for all models
+RUN uv sync 
+CMD [ "bash" ]
